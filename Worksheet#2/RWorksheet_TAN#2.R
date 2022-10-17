@@ -33,8 +33,8 @@ x
 
 #a. seq(1, 3, by=0.2) #specify step size
 #Write the R code and its output. Describe the output.
-
-seq(1, 3, by=0.2)
+seq_data <- seq(1, 3, by=0.2)
+seq_data
 [1] 1.0 1.2 1.4 1.6 1.8 2.0 2.2 2.4 2.6 2.8 3.0
 #The gap of these numbers in the sequence was 0.2.
 
