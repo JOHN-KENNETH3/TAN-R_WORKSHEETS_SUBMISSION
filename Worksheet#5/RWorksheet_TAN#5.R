@@ -1,0 +1,145 @@
+#Worksheet 5
+
+#1. The table shows the enrollment of BS in Computer Science, SY 2010-2011.
+
+enrollment_data<- data.frame (
+  "Course Year" = c("1st","2nd","3rd","4th"),
+  "2019-2020" = c(80,75,70,60)
+)
+enrollment_data
+
+#a. Plot the data using a bar graph. Write the codes and copy the result.
+require(ggplot2)
+
+plot_data <- c("1st" = 80, "2nd" = 75, "3rd" = 70, "4th" = 60)
+barplot(plot_data)
+
+#b. Using the same table, label the barchart with
+#Title = ” Enrollment of BS Computer Science
+#horizontal axis = “Curriculum Year” and
+#vertical axis = “number of students”
+
+plot_data <- c("1st" = 80 , "2nd" = 75, "3rd" = 70, "4th" = 60)
+barplot(plot_data, main = "Enrollment of BS Computer Science", xlab = 
+          "Curriculum Year", ylab = "number of students")
+
+
+# 2. The monthly income of De Jesus family was spent on the following: 60% on Food, 
+#10% on electricity, 5% for savings, and 25% for other miscellaneous expenses.
+
+# a. Create a table for the above scenario. Write the codes and its result.
+
+expenses_data <- data.frame(
+  facts = c("Food", "Electricity", "Savings", "Miscellaneous_expenses"),
+  spent = c(60, 10, 5, 25)
+)
+expenses_data
+
+table_data <- table(expenses_data)
+table_data
+
+
+# b. Plot the data using a pie chart. Add labels, colors and legend. 
+#Write the codes and its result.
+
+
+
+data_per <- round(spent/sum(spent) * 100, 1)
+data_per <- paste(data_per,"%",sep = " ")
+
+data_pie <- pie(spent,
+                main = "Month Data",
+                col = rainbow(4),
+                labels =  data_per, cex = 0.8)
+                
+data_pie
+                
+                legend(1.3,1.5, c("Food","Electricity","Savings","Miscellaneous expenses"),
+                       cex = 0.8,fill = rainbow(4))
+                
+                
+
+                
+# 3. Open the mtcars dataset.
+
+# a. Create a simple histogram specifically for mpg (miles per gallon) variable. 
+#Use $ to select the mpg only. Write the codes and its result.
+  
+  data("mtcars")
+  data_mtcars <- (mtcars$mpg)
+  data_mtcars
+                
+  hist(data_mtcars, breaks = 5)
+
+  
+# b. Colored histogram with different number of bins. 
+#hist(mtcars$mpg, breaks=12, col="red") 
+#Note: breaks= controls the number of bins.
+ 
+   hist(data_mtcars, breaks=12, col="red")
+
+#c. Add a Normal Curve. 
+#Copy the result. 
+   
+   cars <- mtcars$mpg
+   
+   h<-hist(cars, breaks=10, col="red", xlab="Miles Per Gallon",
+           main="Histogram with Normal Curve")
+   
+   xfit<-seq(min(cars),max(cars),length=40)
+   yfit<-dnorm(xfit,mean=mean(cars),sd=sd(cars))
+   yfit <- yfit*diff(h$mids[1:2])*length(cars)
+   lines(xfit, yfit, col="blue", lwd=2)
+   
+ data_hist
+ 
+
+# 4. Open the iris dataset. Create a subset for each species.
+ # a. Write the codes and its result.
+ 
+ data("iris")
+ iris_data <- data.frame(iris)
+ iris_data
+ 
+ setosa_data <- subset(iris_data, Species == 'setosa' )
+ setosa_data
+ 
+ versicolor_data <- subset(iris_data, Species == 'versicolor' )
+ versicolor_data
+ 
+ virginica_data <- subset(iris_data, Species == 'virginica' )
+ virginica_data
+ 
+ # b. Get the mean for every characteristics of each species using colMeans(). 
+ #Write the codes and its result. 
+ #Example: setosa <- colMeans(setosa[sapply(setosaDF,is.numeric)])
+ 
+ setosa <- colMeans(setosa_data[sapply(setosa_data,is.numeric)])
+ setosa
+ 
+ versicolor <- colMeans(versicolor_data[sapply(versicolor_data,is.numeric)])
+ versicolor
+ 
+ virginica <- colMeans(Virginica_data[sapply(Virginica_data,is.numeric)])
+ virginica
+ 
+ #c. Combine all species by using rbind()
+ #The table should be look like this:
+ 
+ data_iris <- rbind(setosa, versicolor,virginica)
+ data_iris
+ 
+ iris_df <- data.frame(data_iris)
+ iris_df
+ 
+ #d. From the data in 4-c: Create the barplot().
+ #Write the codes and its result.
+ 
+ barplot(height=as.matrix(iris_df), beside = TRUE,
+         main = "Iris Mean",
+         xlab = "Characteristics",
+         ylab = "Mean Score",
+         col = rainbow(3))
+  
+  
+                
