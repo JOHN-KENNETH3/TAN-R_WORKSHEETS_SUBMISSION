@@ -1,0 +1,245 @@
+---
+title: "Worksheet 7a"
+author: "John Kenneth D. Tan"
+date: "2022-12-11"
+output: pdf_document
+---
+
+Worksheet 7a
+John Kenneth Tan  BSIT 2-A
+
+Libraries
+```{r  lib}
+library(Hmisc)
+library(pastecs)
+```
+Basic Statistics
+
+1. Create a data frame for the table below.
+```{r  studscore}
+student_scores <- data.frame(
+  "Student" <- c(1:10),
+  "Pre-test" <- c(55,54,47,57,51,61,57,54,63,58),
+  "Post-test" <- c(61,60,56,63,56,63,59,56,62,61)
+)
+names(student_scores)<-list("Student", "Pre-test", "Post-test")
+
+student_scores
+```
+a. Compute the descriptive statistics using different packages 
+(Hmisc and pastecs). Write the codes and its result.
+
+Using Hmisc package
+```{r  desc}
+describe(student_scores)
+```
+Using pastecs package
+```{r  stat.desc}
+stat.desc(student_scores)
+```
+\hfill\break
+2. The Department of Agriculture was studying the effects of several levels of a fertilizer on the growth of a plant. For some analyses, it might be useful to convert the fertilizer levels to an ordered factor.
+The data were 10,10,10, 20,20,50,10,20,10,50,20,50,20,10.
+
+a. Write the codes and describe the result.
+```{r  fert_lvl}
+Fertilizer_level <- c(10,10,10, 20,20,50,10,20,10,50,20,50,20,10)
+
+InOrder<-sort(Fertilizer_level)
+InOrder
+#The fertilizer levels were arranged from 10 to 50 in ascending order.
+
+```
+\hfill\break
+3. Abdul Hassan, president of Floor Coverings Unlimited, has asked you to study the exercise levels undertaken by 10 subjects were “l”, “n”, “n”, “i”, “l” , “l”, “n”, “n”, “i”, “l” ; n=none, l=light, i=intense
+
+a. What is the best way to represent this in R?
+```{r  exerlvl}
+exercise_lvl <- factor(c("l", "n", "n", "i", "l", 
+              "l", "n", "n", "i", "l"), levels = 
+               c("n", "l", "i"), ordered = TRUE)
+
+exercise_lvl
+```
+\hfill\break
+4. Sample of 30 tax accountants from all the states and territories 
+of Australia and their individual state of origin is specified by a 
+character vector of state mnemonics as:
+```{r  state}  
+  state <- c("tas", "sa", "qld", "nsw", "nsw", "nt", "wa", 
+          "wa","qld", "vic", "nsw", "vic", "qld", "qld", 
+          "sa", "tas", "sa", "nt", "wa", "vic", "qld", "nsw", 
+          "nsw", "wa", "sa", "act", "nsw", "vic","vic", "act")
+  state
+#The factor function and level of character vector 
+#state mnemonics were displayed
+```
+
+
+a. Apply the factor function and factor level. Describe the results.
+```{r  fac}   
+statef<-factor(state)   
+statef
+```
+\hfill\break
+5. From #4 - continuation:
+
+Suppose we have the incomes of the same tax accountants in another vector (insuitably large units of money)
+```{r  income}
+incomes <- c(60, 49, 40, 61, 64, 60, 59, 54,
+             62, 69, 70, 42, 56, 61, 61, 61, 58, 51, 48,
+             65, 49, 49, 41, 48, 52, 46, 59, 46, 58, 43)
+incomes
+```
+a. Calculate the sample mean income for each state we can now use the special function tapply() 
+```{r  sampmean}
+samp_mean <- tapply(incomes, statef, mean)
+samp_mean
+```
+b. Copy the results and interpret.    
+
+act      nsw       nt      qld       sa      tas      vic       wa 
+
+44.50000 57.33333 55.50000 53.60000 55.00000 60.5000056.0000052.25000
+
+Above are the 30 tax accountants from all the states and territories 
+of Australia and their individual state of origin while beneath it
+are their sample mean income.
+
+\hfill\break
+6. Calculate the standard errors of the state income means (refer again to number 3)
+stdError <- function(x) sqrt(var(x)/length(x))
+Note: After this assignment, the standard errors are calculated by:
+incster <- tapply(incomes, statef, stdError)
+
+a. What is the standard error? Write the codes.
+```{r se}
+Length_SM.n <- length(samp_mean)
+Sd_SM.sd <- sd(samp_mean)
+Sd_error.se <- Sd_SM.sd/sqrt(Length_SM.n)
+Sd_error.se
+```
+b. Interpret the result.
+
+Answer: The standard error is 1.653911
+\hfill\break
+7. Use the titanic dataset.
+a. subset the titanic dataset of those who survived and not survived. Show the codes and its result.
+```{r  titanic}
+data("Titanic")
+head<- data.frame(Titanic)
+```
+a. Subset the titanic dataset of those who survived and not survived. 
+Show the codes and its result.
+```{r  sub_titanic}
+sub_titanic <- subset(head, select = "Survived")
+sub_titanic
+```
+\hfill\break
+8. The data sets are about the breast cancer Wisconsin. The samples arrive periodically as Dr. Wolberg reports his clinical cases. The database therefore reflects this chronological grouping of the data. You can create this dataset in Microsoft Excel.         
+          
+a. describe what is the dataset all about.
+
+Answer: The given dataset is all about the information of Breast Cancer.
+
+b. Import the data from MS Excel. Copy the codes.
+```{r  import}
+library("readxl")
+
+BC_data <- read_excel("C:/Users/Kenneth/Desktop/RProg_Worksheets/Worksheet 7a/Breast_Cancer.xlsx")
+BC_data
+```
+c. Compute the descriptive statistics using different packages. Find the values of:
+  
+c.1 Standard error of the mean for clump thickness.
+```{r clumpT}
+Clump <- length(BC_data$`CL. thickness`)
+ClumpA_data <- sd(BC_data$`CL. thickness`)
+ClumpB_data <- ClumpA_data/sqrt(BC_data$`CL. thickness`)
+ClumpB_data
+```
+c.2 Coefficient of variability for Marginal Adhesion.
+```{r  MA}
+CV_MA <- sd(BC_data$`Marg. Adhesion`) / mean(BC_data$`Marg. Adhesion`)* 100
+CV_MA
+```
+c.3 Number of null values of Bare Nuclei.
+```{r  BN}
+NVal_BN <- subset(BC_data,`Bare. Nuclei` == "NA")
+```
+c.4 Mean and standard deviation for Bland Chromatin
+```{r   BC}
+mean(BC_data$`Bl. Cromatin`)
+sd(BC_data$`Bl. Cromatin`)
+```
+c.5 Confidence interval of the mean for Uniformity of Cell Shape      
+```{r  UCS}   
+Confi_Mean <- mean(BC_data$`Cell Shape`)
+Confi_Mean
+```
+Compute the mean
+```{r  compmean}
+Comp_M <- mean(BC_data$`Cell Shape`)
+Comp_M
+```
+Calculate the standard error of the mean
+```{r  meanSE}
+Stan_E <- length(BC_data$`Cell Shape`)
+Stan_B <- sd(BC_data$`Cell Shape`)
+se_mean <- Stan_B/sqrt(Stan_E)
+se_mean
+```
+Find the t-score that corresponds to the confidence level
+```{r  tscore}
+D = 0.05
+nE = Stan_E - 1
+nF = qt(p = D/ 2, df = nE,lower.tail = F)
+nF
+```
+Constructing the confidence interval
+```{r  CI}
+nG <- nF * D
+nG
+```
+Lower
+```{r lower}
+Low <- Comp_M - nG
+Low
+```
+Upper
+```{r  upper}
+High <- Comp_M + nG
+High
+
+c(Low,High)
+```
+
+d. How many attributes?
+```{r  attributes}
+attributes(BC_data)
+```  
+e. Find the percentage of respondents who are malignant. Interpret the results.
+```{r  malignant}
+Malig_data <- subset(BC_data, Class == "maligant")
+Malig_data
+```
+Getting the percentage
+```{r  percent}
+16/49 * 100
+```
+There 16 respondents who are malignant and there are 49 respondents in total
+
+
+9. Export the data abalone to the Microsoft excel file. Copy the codes.
+```{r  export}
+library(AppliedPredictiveModeling)
+data("abalone")
+View(abalone)
+head(abalone)
+summary(abalone)
+```
+Exporting the data abalone to the Microsoft excel file
+
+write.csv(abalone,"C://Users/Kenneth/Desktop/RProg_Worksheets/
+          Worksheet 7a/abalone.csv")
+
